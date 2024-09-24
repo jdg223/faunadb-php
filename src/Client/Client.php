@@ -32,12 +32,12 @@ final class Client
     ) {
     }
 
-    public function query(Expr $expr, ?Config $options = null): RequestResult
+    public function query(string $expr, ?Config $options = null): RequestResult
     {
         $options = $this->configToOptions($options);
         $options['body'] = $expr;
 
-        return $this->request(self::POST, '', $options);
+        return $this->request(self::POST, 'query/1', $options);
     }
 
     public function paginate(Expr $expr, array $params, ?Config $options = null): PageHelper
@@ -79,7 +79,7 @@ final class Client
             $request = $request->withAddedHeader($header, $value);
         }
         if (isset($options['body'])) {
-            $body = Expr::toString($options['body']);
+            $body = json_encode(['query'=> $options['body']]);
             $request = $request->withBody(
                 $this->streamFactory->createStream($body),
             );

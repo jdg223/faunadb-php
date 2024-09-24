@@ -1,5 +1,5 @@
 {
-	"name": "m50/faunadb",
+	"name": "jdg223/faunadb",
 	"description": "A library for interacting with FaunaDB and writing FQL.",
 	"license": "MIT",
 	"keywords": [

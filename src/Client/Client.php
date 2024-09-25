@@ -22,8 +22,6 @@ final class Client
 
     private const API_VERSION = 4;
 
-    private ?DateTimeImmutable $lastTxnTime = null;
-
     public function __construct(
         private ClientInterface $httpClient,
         private RequestFactoryInterface $requestFactory,
@@ -94,14 +92,7 @@ final class Client
             ->withAddedHeader('X-Driver-Env', $this->buildDriverEnv())
             ->withAddedHeader('Accept', 'application/json');
 
-        if ($this->lastTxnTime !== null) {
-            $request = $request->withAddedHeader('X-Last-Seen-Txn', (string) $this->lastTxnTime->getTimestamp());
-        }
-
         $response = $this->httpClient->sendRequest($request);
-
-        $txnTime = (int) $response->getHeader('X-Txn-Time')[0];
-        $this->lastTxnTime = (new DateTimeImmutable())->setTimestamp($txnTime) ?: null;
 
         return new RequestResult(
             $request,
